@@ -83,5 +83,7 @@ extern "C"
 	declare sub fillPolygan cdecl alias "fillPolygan"(x as integer,y as integer,rr as integer,division as integer, r as integer,g as integer,b as integer)
 	declare sub addsControls cdecl(x as integer,y as integer,w as integer,h as integer,captions as zstring ptr,r as integer,g as integer,b as integer)
 	declare function getwindows cdecl(value as zstring ptr)as integer ptr
-	declare function getNULL()as integer ptr
+	declare sub drawLabelsControls cdecl(dc as integer ptr)
+	declare function getNULL cdecl()as integer ptr
+	declare function scanInsides cdecl(xx as integer,yy as integer) as integer
 end extern
