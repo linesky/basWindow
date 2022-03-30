@@ -27,7 +27,7 @@
 #define winsh 200
 #define shmhead 25
 int fbfd;
-#define shmp "windows"
+#define shmp "IXwindowsX"
 #define FONTDATAMAX 2048
 #define PI 3.1415927
 #define flagoutput 4
@@ -5326,7 +5326,21 @@ int getwscr(){
 int gethscr(){
 	return vinfo.yres;
 }
-
+int *getNULL(){
+	return NULL;
+}
+void handler(int value){
+	(*handler_break)();
+}
+void onexits(){
+	(*handler_end)();
+}
+void setBreak(void (*handler_breaks)(void)){
+	handler_break=handler_breaks;
+}
+void setEnds(void (*handler_breaks)(void)){
+	handler_end=handler_breaks;
+}
 int startX(char *c){
 	
 int fbfd = open("/dev/fb0", O_RDWR);
@@ -6960,23 +6974,10 @@ int loadinit(char *files){
 		win[n].shms[flaginput]=-1;
 		n++;
 	}
+	signal(SIGINT,handler);
+	on_exit(onexits,(void *)0);
 	fclose(f1);
 	return 0;
-}
-int *getNULL(){
-	return NULL;
-}
-void handler(int value){
-	(*handler_break)();
-}
-void onexits(){
-	(*handler_end)();
-}
-void setBreak(void (*handler_breaks)(void)){
-	handler_break=handler_breaks;
-}
-void setEnds(void (*handler_breaks)(void)){
-	handler_end=handler_breaks;
 }
 int *getwindows(char *value){
 	int fd = shm_open(value,O_RDWR ,0);
