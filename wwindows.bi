@@ -86,4 +86,6 @@ extern "C"
 	declare sub drawLabelsControls cdecl(dc as integer ptr)
 	declare function getNULL cdecl()as integer ptr
 	declare function scanInsides cdecl(xx as integer,yy as integer) as integer
+	declare sub setBreak cdecl(brsss as sub ptr)
+	declare sub setEnds cdecl(brsss as sub ptr)
 end extern
