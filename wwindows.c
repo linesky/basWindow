@@ -105,6 +105,8 @@ struct cursors{
 };
 struct label lll[maxlabels];
 int loads=0;
+void (*handler_break)(void);
+void (*handler_end)(void);
 struct cursors curs;
 int zorder[maxw];
 struct windows win[maxw];
@@ -6964,12 +6966,26 @@ int loadinit(char *files){
 int *getNULL(){
 	return NULL;
 }
+void handler(int value){
+	(*handler_break)();
+}
+void onexits(){
+	(*handler_end)();
+}
+void setBreak(void (*handler_breaks)(void)){
+	handler_break=handler_breaks;
+}
+void setEnds(void (*handler_breaks)(void)){
+	handler_end=handler_breaks;
+}
 int *getwindows(char *value){
 	int fd = shm_open(value,O_RDWR ,0);
 	if (fd==-1)return NULL;
 	if (ftruncate(fd,(winsw*winsh)*(sizeof(int))+50)==-1)return NULL;
 	int *shm1=(int*)mmap(NULL,(winsw*winsh)*(sizeof(int))+50,PROT_WRITE | PROT_READ ,MAP_SHARED,fd,0);
 	if (shm1==MAP_FAILED)return NULL;
+	signal(SIGINT,handler);
+	on_exit(onexits,(void *)0);
 	return shm1;
 	
 }

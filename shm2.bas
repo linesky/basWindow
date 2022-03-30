@@ -1,4 +1,17 @@
 #include once "wwindows.bi"
+dim shared c as string
+public sub endbrs()
+	'save log
+	open c for output as #1
+		print #1,c
+	close
+end sub
+public sub brss()
+	endbrs()
+	end
+end sub
+dim sub1 as sub()
+dim sub2 as sub()
 dim z as zstring ptr
 dim wc as integer ptr
 dim w1 as windows
@@ -7,11 +20,16 @@ dim zz as zstring *1024
 dim zzz as zstring ptr
 dim xx as integer
 dim yy as integer
+sub1=procptr(brss)
+sub2=procptr(endbrs)
 z=@"Exit"
 s=command
 if len(s)<3 then goto endss
 zz=s
 zzz=@zz
+c=s+".txt"
+setBreak @sub1
+setEnds @sub2
 wc=getwindows(@zz)
 if getNULL()=wc then goto endss
 w1.dc=wc+shmhead
@@ -34,3 +52,4 @@ do
 
 loop
 endss:
+endbrs()
